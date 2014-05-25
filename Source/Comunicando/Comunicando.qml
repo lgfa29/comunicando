@@ -6,6 +6,21 @@ Rectangle {
     width: 1000
     height: 600
 
+    Rectangle {
+        width: 100
+        height: 30
+        anchors.leftMargin: 20
+        anchors.topMargin: 20
+        color: "blue"
+
+        Text {
+                anchors.centerIn: parent
+                color: "white"
+                id: menu_selecionado
+            }
+
+    }
+
     ListView {
         width: 920
         height: 300
@@ -22,7 +37,9 @@ Rectangle {
                 width: 300
                 height: 300
                 action: Action {
-                    onTriggered: console.log(name)
+                    onTriggered: {
+                        menu_selecionado.text = name
+                    }
                 }
 
                 style: ButtonStyle {
