@@ -2,27 +2,63 @@ import QtQuick 2.0
 
 ListModel {
     ListElement {
-        name: "Fome"
-        cor: "red"
+        name: "Necessidade"
+        cor: "white"
+        itens: ListModel {
+            ListElement {
+                name: "Voltar"
+                cor: "blue"
+            }
+        }
     }
     ListElement {
-        name: "Banheiro"
-        cor: "yellow"
+        name: "Dor"
+        cor: "white"
+        itens: ListModel {
+            ListElement {
+                name: "Voltar"
+                cor: "blue"
+            }
+        }
     }
     ListElement {
-        name: "TV"
-        cor: "blue"
+        name: "Pessoa"
+        cor: "white"
+        itens: ListModel {
+            ListElement {
+                name: "Voltar"
+                cor: "blue"
+            }
+        }
     }
     ListElement {
-        name: "Brinquedo"
-        cor: "red"
+        name: "Atividade"
+        cor: "white"
+        itens: ListModel {
+            ListElement {
+                name: "Voltar"
+                cor: "blue"
+            }
+        }
     }
     ListElement {
-        name: "Tim Hortons"
-        cor: "blue"
+        name: "Sentimento"
+        cor: "white"
+        itens: ListModel {
+            ListElement {
+                name: "Voltar"
+                cor: "blue"
+            }
+        }
     }
     ListElement {
-        name: "TV"
-        cor: "yellow"
+        name: "Maus Tratos"
+        cor: "white"
+        itens: ListModel {
+            ListElement {
+                name: "Voltar"
+                cor: "blue"
+            }
+        }
     }
 }

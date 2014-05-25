@@ -17,7 +17,7 @@ ListView {
             width: 300
             height: 300
             action: Action {
-                onTriggered: console.log("Teste")
+                onTriggered: console.log(name)
             }
 
             style: ButtonStyle {
