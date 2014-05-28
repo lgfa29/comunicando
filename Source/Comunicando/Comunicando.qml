@@ -21,42 +21,77 @@ Rectangle {
 
     }
 
-    ListView {
-        width: 920
-        height: 300
-        anchors.centerIn: parent
-        highlightFollowsCurrentItem: true
-        model: AcaoModel {}
-        orientation: ListView.Horizontal
-        snapMode: ListView.SnapOneItem
-        spacing: 10
-        focus: true
-        delegate: Row {
-            Button {
-                id: itemButton
+    Component {
+        id: delegate
+        Item {
+            id: wrapper
+            Rectangle {
+                id: rectangle
                 width: 300
                 height: 300
-                action: Action {
-                    onTriggered: {
-                        menu_selecionado.text = name
-                    }
-                }
-
-                style: ButtonStyle {
-                    background: Rectangle {
-                        color: cor
-                        border.color: "black"
-                        border.width: 5
-                        radius: 10
-                    }
-                }
-
+                color: cor
+                border.color: wrapper.PathView.isCurrentItem ? "red" : "black"
+                border.width: 10
+                radius: 10
                 Text {
                     text: name
-                    anchors.horizontalCenter: itemButton.horizontalCenter
-                    anchors.verticalCenter: itemButton.verticalCenter
+                    anchors.centerIn: parent
                 }
+            }
+            function seleciona() {
+                if(wrapper.PathView.isCurrentItem) {
+                    menu_selecionado.text = name
+                }
+            }
+            function getSubItens() {
+                return subItems
             }
         }
     }
+
+    PathView {
+        id: path
+        anchors.fill: parent
+        model: AcaoModel{}
+        delegate: delegate
+        pathItemCount: 3
+        preferredHighlightBegin: 0.35
+        preferredHighlightEnd: 0.65
+        path: Path {
+            startX: 0; startY: 200
+            PathLine { x: 1000; y: 200; }
+        }
+        focus: true
+        Timer {
+            id: timer
+            interval: 1500; running: true; repeat: true
+            onTriggered: {
+                path.decrementCurrentIndex()
+            }
+        }
+    }
+
+    Rectangle {
+        x: 200
+        width: 100
+        height: 100
+        border.color: "black"
+        border.width: 10
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                timer.stop()
+                for(var i = 0; i < path.children.length; ++i)
+                {
+                    if(path.children[i].PathView.isCurrentItem){
+                        path.children[i].seleciona()
+                        path.model = path.children[i].getSubItens()
+                    }
+                }
+                timer.start()
+            }
+
+        }
+    }
 }
+
