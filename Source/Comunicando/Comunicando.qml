@@ -1,13 +1,43 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
+import QtQuick.Layouts 1.0
 
 Rectangle {
     //Descrição da tela principal
     id: programa
-    width: 1200
-    height: 900
+    anchors.fill: parent
     state: "TELA_INICIAL"
+
+    StatusBar {
+        id: statusBar
+        RowLayout {
+            spacing: 10
+
+            Label {
+                text: {
+                    var modoSelecao = tela_inicial.modo_selecao == 1 ? "Varredura" : "Contagem Regressiva";
+                    return "Modo de seleção: " + modoSelecao;
+                }
+            }
+            Label { text: "||" }
+            Label {
+                text: { "Tempo: " + timer.interval / 1000 + "s" }
+            }
+            Label { text: "||" }
+            Label {
+                text: {
+                    var orientacao = path.path == tela_inicial.horizontal ? "Horizontal" : "Vertical";
+                    return "Orientação: " + orientacao;
+                }
+            }
+        }
+    }
+
+    Component.onCompleted: {
+        main_window.statusBar = statusBar;
+    }
+
     //Confirmação do grupo de objetos selecionadas, inicialmente colocamos apenas dois
     Rectangle {
         id: tela_mensagem
@@ -112,6 +142,7 @@ Rectangle {
 
     //Construção da tela inicial
     Rectangle {
+        focus: true
         id: tela_inicial
         anchors.fill: parent
         z: 1
@@ -122,7 +153,7 @@ Rectangle {
         property int contador_y: 170
 
         //Definindo as listas de elementos
-        property ListModel modelo: AcaoModel{}
+        property ListModel modelo: ListModel { }
         property ListModel confirmacao: ConfirmacaoModel{}
 
         //Modo de vizualização horizontal e Vertical
@@ -438,13 +469,16 @@ Rectangle {
             preferredHighlightBegin: 0.35
             preferredHighlightEnd: 0.65
             path: tela_inicial.horizontal
-            focus: true
             Timer {
                 id: timer
                 interval: 4000; running: true; repeat: true
                 onTriggered: {
                     path.decrementCurrentIndex()
                 }
+            }
+
+            Component.onCompleted: {
+                database.popularListModel(tela_inicial.modelo);
             }
         }
 
